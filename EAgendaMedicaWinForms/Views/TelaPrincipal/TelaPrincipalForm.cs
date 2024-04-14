@@ -9,11 +9,11 @@ namespace EAgendaMedicaWinForms.Views.TelaPrincipal
     public partial class TelaPrincipalForm : Form
     {
         public static TelaPrincipalForm Instancia { get; private set; } = null!;
-       
+
         public TelaLogin telaLogin;
 
         private ControladorBase controlador = null!;
-        
+
         private Token? token;
 
         private readonly Ioc ioc;
@@ -27,7 +27,7 @@ namespace EAgendaMedicaWinForms.Views.TelaPrincipal
             InitializeComponent();
 
             this.ConfigurarDialog(alterarTamanho: false);
-          
+
             Logar();
 
             Show();
@@ -129,6 +129,11 @@ namespace EAgendaMedicaWinForms.Views.TelaPrincipal
         private void BtnExcluir_Click(object sender, EventArgs e)
         {
             controlador.Excluir();
+        }
+
+        private void BtnEditar_Click(object sender, EventArgs e)
+        {
+            controlador.Editar();
         }
     }
 }

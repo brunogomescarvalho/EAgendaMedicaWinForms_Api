@@ -27,6 +27,25 @@ namespace EAgendaMedicaWinForms.Infra
             return Result.Ok((CadastrarMedico)ConverterParaObjeto<CadastrarMedico>(result.Value))!;
 
         }
+        public async Task<Result<CadastrarMedico>> SelecionarPorId( Guid id)
+        {
+            var result = await EnviarRequisicao<CadastrarMedico>(default!, HttpMethod.Get, $"medicos/{id}", Token);
+
+            if (result.IsFailed)
+                return new Error(result.Reasons.First()!.Message);
+
+            return Result.Ok((CadastrarMedico)ConverterParaObjeto<CadastrarMedico>(result.Value))!;
+        }
+
+        public async Task<Result<CadastrarMedico>>Editar(CadastrarMedico medico, Guid id)
+        {
+            var result = await EnviarRequisicao<CadastrarMedico>(medico, HttpMethod.Put, $"medicos/{id}", Token);
+
+            if (result.IsFailed)
+                return new Error(result.Reasons.First()!.Message);
+
+            return Result.Ok((CadastrarMedico)ConverterParaObjeto<CadastrarMedico>(result.Value))!;
+        }
 
         public async Task<Result<string>>Excluir(Guid id)
         {

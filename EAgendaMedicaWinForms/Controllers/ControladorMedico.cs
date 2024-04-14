@@ -3,6 +3,7 @@ using EAgendaMedicaWinForms.Models.Medicos;
 using EAgendaMedicaWinForms.Views.Compartilhado;
 using EAgendaMedicaWinForms.Views.Medicos;
 using EAgendaMedicaWinForms.Views.TelaPrincipal;
+using FluentResults;
 
 namespace EAgendaMedicaWinForms.Controllers
 {
@@ -11,6 +12,8 @@ namespace EAgendaMedicaWinForms.Controllers
         TabelaMedicos tabelaMedicos = null!;
 
         ServicoHttpMedico httpMedico;
+
+        Guid Id = default;
 
         public ControladorMedico(ServicoHttpMedico httpMedico)
         {
@@ -32,6 +35,44 @@ namespace EAgendaMedicaWinForms.Controllers
             }
 
         }
+
+        public override async Task Editar()
+        {
+            Id = tabelaMedicos.ObterIdSelecionado();
+
+            if (Id == default)
+            {
+                MessageBox.Show("Por favor, selecione um registro para editar", "Selecione um Registro", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            var medico = await httpMedico.SelecionarPorId(Id);
+
+            var result = MessageBox.Show($"Confirma editar o(a) médico(a) '{medico.Value.Nome}' ?", "Editar Médico", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Cancel)
+            {
+                return;
+            }
+
+            var tela = new TelaCadastrarMedico(medico.Value)
+            {
+                Text = "Editar Médico"
+            };
+
+            tela.onGravarRegistro += EditarMedico;
+
+            if (tela.ShowDialog() == DialogResult.OK)
+            {
+                await ObterListagem();
+            }
+        }
+
+        private async Task<Result<CadastrarMedico>> EditarMedico(CadastrarMedico registro)
+        {
+            return await httpMedico.Editar(registro, Id);
+        }
+
         public override async Task Excluir()
         {
             var idSelecionado = tabelaMedicos.ObterIdSelecionado();
@@ -76,7 +117,7 @@ namespace EAgendaMedicaWinForms.Controllers
 
         private async Task AtualizarMedicos()
         {
-            Thread.Sleep(100);
+            Thread.Sleep(1000);
 
             var result = await httpMedico!.SelecionarTodos();
 

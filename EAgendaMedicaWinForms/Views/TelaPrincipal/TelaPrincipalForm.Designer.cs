@@ -127,6 +127,7 @@ namespace EAgendaMedicaWinForms.Views.TelaPrincipal
             BtnEditar.Name = "BtnEditar";
             BtnEditar.Size = new Size(44, 44);
             BtnEditar.Text = "Editar";
+            BtnEditar.Click += BtnEditar_Click;
             // 
             // BtnExcluir
             // 
@@ -169,7 +170,7 @@ namespace EAgendaMedicaWinForms.Views.TelaPrincipal
             painelRegistros.Size = new Size(800, 353);
             painelRegistros.TabIndex = 5;
             // 
-            // TelaPrincipal
+            // TelaPrincipalForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -179,7 +180,7 @@ namespace EAgendaMedicaWinForms.Views.TelaPrincipal
             Controls.Add(statusStrip1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
-            Name = "TelaPrincipal";
+            Name = "TelaPrincipalForm";
             Text = "E-Agenda Médica";
             FormClosing += TelaPrincipal_FormClosing;
             statusStrip1.ResumeLayout(false);
